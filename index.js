@@ -1,9 +1,31 @@
-/**
- * @format
- */
+import * as React from 'react';
+import { AppRegistry, useColorScheme } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
+import { name as appName } from './app.json';
+import Home from './src/screens/Home';
+import { MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
+import { LightTheme } from './src/Themes/LightTheme';
+import { DarkTheme } from './src/Themes/DarkTheme';
 
-import {AppRegistry} from 'react-native';
-import App from './App';
-import {name as appName} from './app.json';
+const LightScheme = {
+  ...MD3LightTheme,
+  colors: LightTheme
+}
 
-AppRegistry.registerComponent(appName, () => App);
+const DarkScheme = {
+  ...MD3DarkTheme,
+  colors: DarkTheme
+}
+
+export default function Main() {
+  const colorshemes = useColorScheme()
+  const theme = colorshemes === "dark" ? DarkScheme: LightScheme
+  
+  return (
+    <PaperProvider theme={theme}>
+      <Home/>
+    </PaperProvider>
+  );
+}
+
+AppRegistry.registerComponent(appName, () => Main);
