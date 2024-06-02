@@ -6,7 +6,7 @@ function AddStudent(){
         <Card>
             <Card.Title title="Add Student" />
             <Card.Content>
-                <IconButton icon="plus" />
+               <IconButton icon="plus" />
             </Card.Content>
         </Card>
     )

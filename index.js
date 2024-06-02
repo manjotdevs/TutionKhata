@@ -3,6 +3,7 @@ import { AppRegistry, useColorScheme } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { name as appName } from './app.json';
 import Home from './src/screens/Home';
+import App from './App';
 import { MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
 import { LightTheme } from './src/Themes/LightTheme';
 import { DarkTheme } from './src/Themes/DarkTheme';
@@ -23,7 +24,7 @@ export default function Main() {
   
   return (
     <PaperProvider theme={theme}>
-      <Home/>
+      <App/>
     </PaperProvider>
   );
 }
