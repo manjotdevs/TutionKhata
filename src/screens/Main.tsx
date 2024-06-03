@@ -6,7 +6,7 @@ export default function MainScrean({navigation}:any) {
     <>
       <Text>Home</Text>
       <Button onPress={()=>{
-        navigation.navigate('TutionKhata')
+        navigation.navigate('Home')
       }}>Home page</Button>
     </>
   );

@@ -1,24 +1,41 @@
 import React from 'react';
-import Home from './src/screens/Home';
-import MainScrean from './src/screens/Main';
-import Setting from './src/screens/Setting';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import HomeTab from './src/Navigation/Tabs/HomeTab';
+import SettingTab from './src/Navigation/Tabs/SettingTab';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function App() {
-  const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="TutionKhata"
-          component={Home}
-          options={{headerTitleAlign: 'center'}}
+      <Tab.Navigator
+        screenOptions={({route}) => ({
+          tabBarIcon: ({color, size}) => {
+            let iconName;
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Setting') {
+              iconName = 'cog';
+            }
+            return <Icon name={iconName || 'home'} size={35} color={color} />;
+          },
+          tabBarActiveTintColor: 'blue',
+          tabBarInactiveTintColor: 'grey',
+          tabBarStyle: {
+            height: 70,
+            paddingBottom: 10,
+            paddingTop: 8,
+          },
+          tabBarShowLabel: false,
+        })}>
+        <Tab.Screen
+          name="Home"
+          component={HomeTab}
+          options={{headerTitle: 'TutionKhata', headerTintColor: 'blue'}}
         />
-        <Stack.Screen name="main" component={MainScrean} />
-      </Stack.Navigator>
+        <Tab.Screen name="Setting" component={SettingTab} options={{headerShown:false}} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
