@@ -1,9 +1,11 @@
 import React from 'react';
+import { Text } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeTab from './src/Navigation/Tabs/HomeTab';
 import SettingTab from './src/Navigation/Tabs/SettingTab';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Button } from 'react-native-paper';
 
 function App() {
   const Tab = createBottomTabNavigator();
@@ -18,7 +20,7 @@ function App() {
             } else if (route.name === 'Setting') {
               iconName = 'cog';
             }
-            return <Icon name={iconName || 'home'} size={35} color={color} />;
+            return <Icon name={iconName || 'home'} size={38} color={color} />;
           },
           tabBarActiveTintColor: 'blue',
           tabBarInactiveTintColor: 'grey',
@@ -27,12 +29,12 @@ function App() {
             paddingBottom: 10,
             paddingTop: 8,
           },
-          tabBarShowLabel: false,
+          tabBarShowLabel:false,
         })}>
         <Tab.Screen
           name="Home"
           component={HomeTab}
-          options={{headerTitle: 'TutionKhata', headerTintColor: 'blue'}}
+        options={{headerShown:false}}
         />
         <Tab.Screen name="Setting" component={SettingTab} options={{headerShown:false}} />
       </Tab.Navigator>

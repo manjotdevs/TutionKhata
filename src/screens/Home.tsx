@@ -10,7 +10,6 @@ function Home({navigation}: any): React.JSX.Element {
   const containerStyle = {backgroundColor: 'white', padding: 20};
   return (
     <>
-      <AddStudent />
       <Button
         mode="contained"
         textColor="#24ea0e"
