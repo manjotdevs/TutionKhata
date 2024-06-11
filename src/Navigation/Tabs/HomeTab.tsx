@@ -9,7 +9,7 @@ function HomeTab(): React.JSX.Element {
     <>
     <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
       <Stack.Screen
-        name="Home"
+        name="StackHomeScreen"
         component={Home}
         options={{
           headerShown: true,

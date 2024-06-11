@@ -6,7 +6,7 @@ function SettingTab(): React.JSX.Element {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Setting"
+        name="StackSettingScreen"
         component={Setting}
         options={{headerShown:false}}
       />
