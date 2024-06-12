@@ -167,18 +167,31 @@ const SettingLogo: React.FC = () => {
           }}
           style={styles.ModalContainer}>
           <View style={styles.modalview}>
-            <TouchableOpacity onPress={openCamera}>
-              <Text>Open Camera</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={openGallery}>
-              <Text>Open Camera</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={loadImage}>
-              <Text>Open Camera</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={deleteImage}>
-              <Text>Open Camera</Text>
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity style={styles.button} onPress={openCamera}>
+                <Text>Open Camera</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={openGallery}>
+                <Text>Open Gallery</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={loadImage}>
+                <Text>loadImage</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={deleteImage}>
+                <Text>deleteImage</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.cancleview}>
+              <TouchableOpacity
+                style={styles.buttoncancle}
+                onPress={() => {
+                  setShowModal(false);
+                }}>
+                <Text>Cancle</Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
         </Modal>
       </Portal>
@@ -199,15 +212,42 @@ const styles = StyleSheet.create({
     height: '100%',
     margin: 0,
   },
-  modalview:{
+  modalview: {
     position: 'absolute',
     top: 80,
-    backgroundColor:'blue',
-    width:'100%',
-    height:500,
-    padding:20,
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
+    backgroundColor: 'blue',
+    width: '100%',
+    height: 500,
+    padding: 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
+  button: {
+    backgroundColor: '#6200EE',
+    margin: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    elevation: 8, // For Android
+  },
+  buttoncancle: {
+    backgroundColor: 'red',
+    margin: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    elevation: 8, // For Android
+    width: '30%',
+  },
+  cancleview:{
+    flex: 1,
+    paddingTop: 30,
+    position: 'relative',
+    left: '65%',
+
+
+
+
   }
 });
 
