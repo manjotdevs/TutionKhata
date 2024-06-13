@@ -2,7 +2,6 @@ import * as React from 'react';
 import { AppRegistry, useColorScheme } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { name as appName } from './app.json';
-import Home from './src/Screens/Home';
 import App from './App';
 import { MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
 import { LightTheme } from './src/Themes/LightTheme';

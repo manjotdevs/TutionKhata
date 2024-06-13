@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
-  Button,
   Image,
   StyleSheet,
   PermissionsAndroid,
@@ -10,15 +9,15 @@ import {
   Alert,
   Text,
 } from 'react-native';
-import {Modal, PaperProvider, Portal} from 'react-native-paper';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { Modal, Portal } from 'react-native-paper';
+import { launchCamera, launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {DrawerContentScrollView} from '@react-navigation/drawer';
-import {PortalContext} from 'react-native-paper/lib/typescript/components/Portal/PortalHost';
+
+const defaultImage = require('../assets/Images/profile_pic.jpg'); // Your default image path
 
 const SettingLogo: React.FC = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
-  const defaultImage = require('../assets/Images/profile_pic.jpg'); // Your default image path
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     loadImage();
@@ -78,14 +77,14 @@ const SettingLogo: React.FC = () => {
     }
 
     const options = {
-      mediaType: 'photo',
+      mediaType: 'photo' as const,
       maxWidth: 300,
       maxHeight: 300,
       quality: 1,
       includeBase64: true,
     };
 
-    launchCamera(options, response => {
+    launchCamera(options, (response: ImagePickerResponse) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.errorCode) {
@@ -94,7 +93,7 @@ const SettingLogo: React.FC = () => {
         const asset = response.assets && response.assets[0];
         if (asset?.base64) {
           AsyncStorage.setItem('storedImage', asset.base64);
-          setImageUri(asset.uri);
+          setImageUri(asset.uri ?? null);
         }
       }
     });
@@ -109,14 +108,14 @@ const SettingLogo: React.FC = () => {
     }
 
     const options = {
-      mediaType: 'photo',
+      mediaType: 'photo' as const,
       maxWidth: 300,
       maxHeight: 300,
       quality: 1,
       includeBase64: true,
     };
 
-    launchImageLibrary(options, response => {
+    launchImageLibrary(options, (response: ImagePickerResponse) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.errorCode) {
@@ -125,7 +124,7 @@ const SettingLogo: React.FC = () => {
         const asset = response.assets && response.assets[0];
         if (asset?.base64) {
           AsyncStorage.setItem('storedImage', asset.base64);
-          setImageUri(asset.uri);
+          setImageUri(asset.uri ?? null);
         }
       }
     });
@@ -145,8 +144,6 @@ const SettingLogo: React.FC = () => {
     setImageUri(Image.resolveAssetSource(defaultImage).uri);
   };
 
-  const [ShowModal, setShowModal] = useState(false);
-
   return (
     <>
       <TouchableOpacity
@@ -154,19 +151,19 @@ const SettingLogo: React.FC = () => {
           setShowModal(true);
         }}>
         <Image
-          source={imageUri ? {uri: imageUri} : defaultImage}
+          source={imageUri ? { uri: imageUri } : defaultImage}
           style={styles.image}
         />
       </TouchableOpacity>
 
       <Portal>
         <Modal
-          visible={ShowModal}
+          visible={showModal}
           onDismiss={() => {
             setShowModal(false);
           }}
-          style={styles.ModalContainer}>
-          <View style={styles.modalview}>
+          style={styles.modalContainer}>
+          <View style={styles.modalView}>
             <View>
               <TouchableOpacity style={styles.button} onPress={openCamera}>
                 <Text>Open Camera</Text>
@@ -175,23 +172,22 @@ const SettingLogo: React.FC = () => {
                 <Text>Open Gallery</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={loadImage}>
-                <Text>loadImage</Text>
+                <Text>Load Image</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={deleteImage}>
-                <Text>deleteImage</Text>
+                <Text>Delete Image</Text>
               </TouchableOpacity>
             </View>
 
-            <View style={styles.cancleview}>
+            <View style={styles.cancelView}>
               <TouchableOpacity
-                style={styles.buttoncancle}
+                style={styles.buttonCancel}
                 onPress={() => {
                   setShowModal(false);
                 }}>
-                <Text>Cancle</Text>
+                <Text>Cancel</Text>
               </TouchableOpacity>
             </View>
-
           </View>
         </Modal>
       </Portal>
@@ -205,14 +201,14 @@ const styles = StyleSheet.create({
     height: 180,
     borderRadius: 100,
   },
-  ModalContainer: {
-    backgroundColor: 'rgba(0,0,0, 0.2',
+  modalContainer: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
     bottom: 0,
     width: '100%',
     height: '100%',
     margin: 0,
   },
-  modalview: {
+  modalView: {
     position: 'absolute',
     top: 80,
     backgroundColor: 'blue',
@@ -230,7 +226,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 8, // For Android
   },
-  buttoncancle: {
+  buttonCancel: {
     backgroundColor: 'red',
     margin: 5,
     paddingVertical: 10,
@@ -239,16 +235,12 @@ const styles = StyleSheet.create({
     elevation: 8, // For Android
     width: '30%',
   },
-  cancleview:{
+  cancelView: {
     flex: 1,
     paddingTop: 30,
     position: 'relative',
     left: '65%',
-
-
-
-
-  }
+  },
 });
 
 export default SettingLogo;
