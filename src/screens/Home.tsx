@@ -1,45 +1,101 @@
-import React, {useState} from 'react';
-import {View, TouchableOpacity, StyleSheet} from 'react-native';
-import {Modal, Portal, Text, Button, PaperProvider} from 'react-native-paper';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, Portal, Text, Button, Provider as PaperProvider, List } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { SText } from '../utils/Styled';
 
-function Home({navigation}: any): React.JSX.Element {
-  const [ShowModal, setShowModal] = useState(false);
+function Home({ navigation }: any): React.JSX.Element {
+  const [showModal, setShowModal] = useState(false);
+  const [teacherName, setTeacherName] = useState('');
+  const [teacherList, setTeacherList] = useState<string[]>([]);
+
+  useEffect(() => {
+    retrieveData();
+  }, []);
+
+  // Add Teacher to storeData
+  const addTeacher = async () => {
+    if (teacherName.trim() !== '') {
+      const newTeacherList = [...teacherList, teacherName];
+      setTeacherList(newTeacherList);
+      setTeacherName('');
+      await storeData(newTeacherList);
+    }
+  };
+
+  const storeData = async (data: string[]) => {
+    try {
+      await AsyncStorage.setItem('TeacherList', JSON.stringify(data));
+    } catch (e) {
+      console.log('Error saving data:', e);
+    }
+  };
+
+  const retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('TeacherList');
+      if (value !== null) {
+        setTeacherList(JSON.parse(value));
+      }
+    } catch (e) {
+      console.log('Error retrieving data:', e);
+    }
+  };
 
   return (
-    <>
-      <View style={{backgroundColor:'green',height:'100%'}}>
+    <PaperProvider>
+      <View style={{ backgroundColor: 'rgba(40, 167, 69, 0.5)', height: '100%' }}>
         <Portal>
           <Modal
-            visible={ShowModal}
-            onDismiss={() => {
-              setShowModal(false);
-            }}>
+            visible={showModal}
+            onDismiss={() => setShowModal(false)}
+          >
             <Text>Example Modal. Click outside this area to dismiss.</Text>
           </Modal>
         </Portal>
         <Button
-          style={{marginTop: 30}}
-          onPress={() => {
-            setShowModal(true);
-          }}>
+          style={{ marginTop: 30 }}
+          onPress={() => setShowModal(true)}
+        >
           Show
         </Button>
+        <SText className='bg-red-500'>hi</SText>
+        <View style={Styles.container}>
+          <TextInput
+            value={teacherName}
+            onChangeText={text => setTeacherName(text)}
+            placeholder="Enter teacher's name"
+            style={Styles.input}
+          />
+          <Button mode="contained" onPress={addTeacher} style={Styles.button}>
+            Add
+          </Button>
+          <FlatList
+            data={teacherList}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <List.Item
+                title={item}
+                left={() => <List.Icon icon="account" />}
+              />
+            )}
+            style={Styles.textList}
+          />
+        </View>
       </View>
-
       <TouchableOpacity
-        onPress={() => {
-          setShowModal(true);
-        }}
-        style={Styles.floationgbutton}>
-        <Text>+</Text>
+        onPress={() => setShowModal(true)}
+        style={Styles.floatingButton}
+      >
+        <Icon name="plus" size={29} color={'rgba(255, 255, 255, 1)'} />
       </TouchableOpacity>
-    </>
+    </PaperProvider>
   );
 }
 
 const Styles = StyleSheet.create({
-  floationgbutton: {
+  floatingButton: {
     position: 'absolute',
     width: 65,
     height: 65,
@@ -57,6 +113,23 @@ const Styles = StyleSheet.create({
     },
     shadowOpacity: 0.95,
     shadowRadius: 5,
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  input: {
+    marginBottom: 10,
+    borderRadius:2,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  button: {
+    marginBottom: 20,
+  },
+  textList: {
+    marginTop: 20,
   },
 });
 

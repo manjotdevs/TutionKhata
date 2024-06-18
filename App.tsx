@@ -1,11 +1,9 @@
 import React from 'react';
-import { Text } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeTab from './src/Navigation/Tabs/HomeTab';
 import SettingTab from './src/Navigation/Tabs/SettingTab';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Button } from 'react-native-paper';
 
 function App() {
   const Tab = createBottomTabNavigator();
@@ -25,6 +23,7 @@ function App() {
           tabBarActiveTintColor: 'blue',
           tabBarInactiveTintColor: 'grey',
           tabBarStyle: {
+            position: 'relative',
             height: 70,
             paddingBottom: 10,
             paddingTop: 8,
